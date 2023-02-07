@@ -265,5 +265,5 @@ class Game:
         self.loop()
 
 
-g = Game(5)
+g = Game(6)
 g.start()
