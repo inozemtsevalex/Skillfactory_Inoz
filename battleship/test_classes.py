@@ -198,7 +198,7 @@ class Game:
     def random_board(self):
         board = None
         while board is None:
-            board = self.random_place('a')
+            board = self.random_place('auto')
         return board
 
     def random_place(self, gen_type):
