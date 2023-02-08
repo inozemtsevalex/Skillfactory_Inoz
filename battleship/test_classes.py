@@ -1,3 +1,6 @@
+from random import randint
+
+
 class Dot:
     def __init__(self, x, y):
         self.x = x
@@ -136,16 +139,89 @@ class Board:
     def begin(self):
         self.busy = []
 
-b = Board(6)
-ship = Ship(Dot(2,3), 3, 0)
-b.add_ship(ship)
-print(b)
-b.begin()
-b.shot(Dot(2,2))
-print(b)
-b.shot(Dot(2,3))
-print(b)
-b.shot(Dot(3,3))
-print(b)
-b.shot(Dot(4,3))
-print(b)
+
+class Player:
+    def __init__(self, board, enemy):
+        self.board = board
+        self.enemy = enemy
+
+    def ask(self):
+        raise NotImplementedError()
+
+    def move(self):
+        while True:
+            try:
+                target = self.ask()
+                repeat = self.enemy.shot(target)
+                return repeat
+            except BoardException as e:
+                print(e)
+
+
+class AI(Player):
+    def ask(self):
+        d = Dot(randint(0, 5), randint(0, 5))
+        print(f"Ход компьютера: {d.x + 1} {d.y + 1}")
+        return d
+
+
+class User(Player):
+    def ask(self, type):
+        while True:
+            cords = input("Ваш ход: ").split()
+
+            if len(cords) != 2:
+                print(" Введите 2 координаты! ")
+                continue
+
+            x, y = cords
+
+            if not (x.isdigit()) or not (y.isdigit()):
+                print(" Введите числа! ")
+                continue
+
+            x, y = int(x), int(y)
+
+            return Dot(x, y)
+
+
+class Game:
+    def __init__(self, size=6):
+        self.size = size
+        pl = self.random_board()
+        co = self.random_board()
+        co.hid = True
+
+        self.ai = AI(co, pl)
+        self.us = User(pl, co)
+
+    def random_board(self):
+        board = None
+        while board is None:
+            board = self.random_place('a')
+        return board
+
+    def random_place(self, gen_type):
+        lens = [3, 2, 2, 1, 1, 1, 1]
+        board = Board(size=self.size)
+        attempts = 0
+        for l in lens:
+            if gen_type == 'auto':
+                attempts += 1
+                if attempts > 2000:
+                    return None
+                coord_st = Dot(randint(0, self.size), randint(0, self.size))
+            else:
+                coord_st = self.us.ask('')
+            ship = Ship(coord_st, l, randint(0, 1))
+            try:
+                board.add_ship(ship)
+                print(board)
+            except BoardWrongShipException:
+                print('exception')
+        board.begin()
+        return board
+
+g = Game()
+print(g.random_board())
+

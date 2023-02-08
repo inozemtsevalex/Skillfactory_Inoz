@@ -117,6 +117,23 @@ class Board:
     def board_clear(self):
         self.busy = []
 
+class Game:
+    def __init__(self, board):
+        self.board = board
+
+    def random_place(self):
+        shp_array = [3, 2, 2, 1, 1, 1, 1]
+        board = Board(size=self.size)
+        attempts = 0
+        for i in shp_array:
+            while True:
+                attempts += 1
+
+
+
+class User:
+    def __init__(self, board):
+        self.board = board
 
 
 

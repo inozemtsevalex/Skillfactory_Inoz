@@ -264,6 +264,6 @@ class Game:
         self.greet()
         self.loop()
 
-
-g = Game(6)
+size = int(input('Введите размер игрового поля (5-9): '))
+g = Game(size)
 g.start()
