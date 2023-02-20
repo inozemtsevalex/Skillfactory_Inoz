@@ -1,29 +1,22 @@
-class Event:
-    def __init__(self, timestamp, event_type, session_id):
-        self.timestamp = timestamp
-        self.type = event_type
-        self.session_id = session_id
-events = [
-    {
-     "timestamp": 1554583508000,
-     "type": "itemViewEvent",
-     "session_id": "@:NynteeXG:MYlskrqZbcmXNSFEJaZIsNVGeDLLpmct",
-    },
-    {
-     "timestamp": 1555296337000,
-     "type": "itemViewEvent",
-     "session_id": "@:NynteeXG:MYlskrqZbcmXNSFEJaZIsNVGeDLLpmct",
-    },
-    {
-     "timestamp": 1549461608000,
-     "type": "itemBuyEvent",
-     "session_id": "@:NynteeXG:MYlskrqZbcmXNSFEJaZIsNVGeDLLpmct",
-    },
-]
+
+class Node:
+  def __init__(self, cargo=None, next=None):
+    self.cargo = cargo
+    self.next  = next
+
+  def __str__(self):
+    return str(self.cargo)
+def printBackward(list):
+  if list == None: return
+  head = list
+  tail = list.next
+  printBackward(tail)
+  print(head),
 
 
-for event in events:
-    event_obj = Event(timestamp=event.get("timestamp"),
-	              event_type=event.get("type"),
-		      session_id=event.get("session_id"))
-    print(event_obj.timestamp)
+node1 = Node(1)
+node2 = Node(2)
+node3 = Node(3)
+node1.next = node2
+node2.next = node3
+printBackward(node1)
